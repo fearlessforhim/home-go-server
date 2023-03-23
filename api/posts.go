@@ -30,14 +30,13 @@ func FetchPosts(w http.ResponseWriter, r *http.Request) {
 		var title string
 		var content string
 		var createdTime int64
-		var enabled int
 
-		err := rows.Scan(&id, &title, &content, &createdTime, &enabled)
+		err := rows.Scan(&id, &title, &content, &createdTime)
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		post := BlogPost{Id: id, Title: title, Content: content, Timestamp: createdTime, Enabled: enabled == 1}
+		post := BlogPost{Id: id, Title: title, Content: content, Timestamp: createdTime}
 	        posts = append(posts, post)
 
 	}
