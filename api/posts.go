@@ -13,6 +13,7 @@ type BlogPost struct {
 	Title string	`json:"title"`
 	Content string 	`json:"content"`
 	Timestamp int64 `json:"createdTime"`
+	Enabled bool `json:"enabled"`
 }
 
 func FetchPosts(w http.ResponseWriter, r *http.Request) {
@@ -21,7 +22,7 @@ func FetchPosts(w http.ResponseWriter, r *http.Request) {
 	db, err := sql.Open("sqlite", "./blog.db")
 	defer db.Close()
 
-	rows, err := db.Query("SELECT * FROM BlogPost")
+	rows, err := db.Query("SELECT * FROM BlogPost WHERE enabled = 1")
 	defer rows.Close()
 
 	for rows.Next() {
@@ -29,13 +30,14 @@ func FetchPosts(w http.ResponseWriter, r *http.Request) {
 		var title string
 		var content string
 		var createdTime int64
+		var enabled int64
 
-		err := rows.Scan(&id, &title, &content, &createdTime)
+		err := rows.Scan(&id, &title, &content, &createdTime, &enabled)
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		post := BlogPost{Id: id, Title: title, Content: content, Timestamp: createdTime}
+		post := BlogPost{Id: id, Title: title, Content: content, Timestamp: createdTime, Enabled: enabled == 1}
 	        posts = append(posts, post)
 
 	}
