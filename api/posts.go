@@ -30,8 +30,9 @@ func FetchPosts(w http.ResponseWriter, r *http.Request) {
 		var title string
 		var content string
 		var createdTime int64
+		var enabled int
 
-		err := rows.Scan(&id, &title, &content, &createdTime)
+		err := rows.Scan(&id, &title, &content, &createdTime, &enabled)
 		if err != nil {
 			log.Fatal(err)
 		}
