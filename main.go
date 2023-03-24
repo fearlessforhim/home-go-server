@@ -35,7 +35,7 @@ func main() {
 }
 
 func FileServer(router *chi.Mux) {
-	root := "./static/fearlessforhim.github.io"
+	root := "./assets"
 	fs := http.FileServer(http.Dir(root))
 
 	router.Get("/*", func(w http.ResponseWriter, r *http.Request) {
